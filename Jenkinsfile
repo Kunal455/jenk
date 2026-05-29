@@ -1,5 +1,4 @@
 pipeline {
-
     agent any
 
     environment {
@@ -25,10 +24,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry(
-                    'https://index.docker.io/v1/',
-                    'dockerhub-creds') {
-
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
                         docker.image("${IMAGE_NAME}:latest").push()
                     }
                 }
@@ -42,9 +38,9 @@ pipeline {
                 docker rm myapp || true
 
                 docker run -d \
-                --name myapp \
-                -p 4000:4000 \
-                ${IMAGE_NAME}:latest
+                  --name myapp \
+                  -p 4000:4000 \
+                  ${IMAGE_NAME}:latest
                 '''
             }
         }
